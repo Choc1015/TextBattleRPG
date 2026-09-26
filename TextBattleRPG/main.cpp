@@ -1,19 +1,25 @@
+#define NOMINMAX
+#include <windows.h>
 #include "Character.h"
 #include <iostream>
 #include <random>
+#include <limits>
 
 using namespace std;
 
 
 int main()
 {
-	Character player("용사", 100, 10, false);
-	Character monster("마왕", 200, 25, false);
+	SetConsoleOutputCP(CP_UTF8);
+
+	Character player("용사", 100, 18, false);
+	Character monster("마왕", 200, 11, false);
 	
 
 	int chooseNum;
 
-	mt19937 rd;
+	mt19937 gen(random_device{}());              // 실행할 때마다 다른 시드
+	uniform_int_distribution<int> coin(0, 1);    // 0 또는 1
 
 
 	while (!player.IsDead() && !monster.IsDead())
@@ -26,6 +32,7 @@ int main()
 			if (cin.fail())
 			{
 				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			}
 
 			if (chooseNum == 1)
@@ -39,14 +46,13 @@ int main()
 			}
 			else
 			{
-				cout << "잘못된 키를 입력하셨습니다" << endl;
-				chooseNum = 0;
-				break;
+				cout << "잘못된 키를 입력하셨습니다!";
+				continue;
 			}
 			
 
 
-			if (rd() % 2 == 0)
+			if (coin(gen) == 0)
 			{
 				monster.SetShield(false);
 			}
@@ -80,11 +86,6 @@ int main()
 		cout << monster.GetName() << "을 무찔렀습니다!";
 		
 	}
-
-
-
-	
-
 
 
 
