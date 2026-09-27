@@ -1,10 +1,11 @@
 #include "Character.h"
+#include <iostream>
 
-
-Character::Character(const std::string& name, float health, float attackDamage, bool isShield)
-	: name(name),health(health), attackDamage(attackDamage), bIsShield(isShield)
+Character::Character(const std::string& name, float health, float attackDamage, bool isShield, int shieldPercent)
+	: name(name), health(health), attackDamage(attackDamage), bIsShield(isShield), shieldPercent(shieldPercent)
 {
 }
+
 
 
 
@@ -21,6 +22,11 @@ float Character::GetHealth() const
 float Character::GetAttackDamage() const
 {
 	return attackDamage;
+}
+
+int Character::GetShieldPercent() const
+{
+	return shieldPercent;
 }
 
 
@@ -41,34 +47,38 @@ void Character::SetAttackDamage(float attackDamage)
 
 }
 
-void Character::SetShield(bool isShield)
-{
-	this->bIsShield = isShield;
-}
-
 void Character::Attack(Character& target)
 {
-	// target 캐싱하는 방법
 	if (IsDead())
 		return;
 
 	if (bIsShield)
+	{
+		std::cout << name << "이(가) 방어!" << std::endl;
 		return;
+	}
+
 
 
 	if (target.IsDead() == false)
 	{
 		target.TakeDamage(attackDamage);
+		std::cout << name << "이(가) 공격!" << std::endl;
 	}
 
 
+}
+
+void Character::Shield(bool isShield)
+{
+	this->bIsShield = isShield;
 }
 
 void Character::TakeDamage(float attackDamage)
 {
 	if (bIsShield)
 	{
-		health -= attackDamage / 2;
+		health -= attackDamage * 0.5f;
 	}
 	else
 	{
