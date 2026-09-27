@@ -1,8 +1,8 @@
 #include "Goblin.h"
 
 
-Goblin::Goblin(const std::string& name, float health, float attackDamage, bool isShield, int shieldPercent)
-	: Character(name, health, attackDamage, isShield, shieldPercent)
+Goblin::Goblin(const std::string& name, float health, float attackDamage, bool isShield, int shieldPercent, float _shieldPower)
+	: Character(name, health, attackDamage, isShield, shieldPercent, _shieldPower)
 {
 
 }
@@ -21,18 +21,3 @@ Goblin::Goblin(const std::string& name, float health, float attackDamage, bool i
 
 }
 
- void Goblin::Shield(int percent)
- {
-	 if (percent < shieldPercent)
-	 {
-		 bIsShield = false;
-
-
-	 }
-	 else
-	 {
-		 bIsShield = true;
-	 }
-
-
- }

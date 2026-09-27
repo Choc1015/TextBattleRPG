@@ -8,11 +8,10 @@ private:
 
 
 public:
-	Dragon(const std::string& name = "default", float health = 0, float attackDamage = 0, bool isShield = false, int shieldPercent = 5);
+	Dragon(const std::string& name = "default", float health = 100, float attackDamage = 0, bool isShield = false, int shieldPercent = 5, float _shieldPower = 0.5f);
 
 
 	void DecideAction(int percent, Character& target) override;
-	void Shield(int percent) override;
 
 
 

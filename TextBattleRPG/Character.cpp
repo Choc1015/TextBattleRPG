@@ -1,8 +1,10 @@
 #include "Character.h"
 #include <iostream>
 
-Character::Character(const std::string& name, float health, float attackDamage, bool isShield, int shieldPercent)
-	: name(name), health(health), attackDamage(attackDamage), bIsShield(isShield), shieldPercent(shieldPercent)
+using namespace std;
+
+Character::Character(const std::string& name, float health, float attackDamage, bool isShield, int shieldPercent, float _shieldPower)
+	: name(name), health(health), attackDamage(attackDamage), bIsShield(isShield), shieldPercent(shieldPercent), shieldPower(_shieldPower)
 {
 }
 
@@ -47,6 +49,13 @@ void Character::SetAttackDamage(float attackDamage)
 
 }
 
+void Character::DecideAction(int percent, Character& target)
+{
+	Attack(target);
+}
+
+
+
 void Character::Attack(Character& target)
 {
 	if (IsDead())
@@ -54,7 +63,7 @@ void Character::Attack(Character& target)
 
 	if (bIsShield)
 	{
-		std::cout << name << "이(가) 방어!" << std::endl;
+		cout << name << "이(가) 방어!" << endl;
 		return;
 	}
 
@@ -69,20 +78,34 @@ void Character::Attack(Character& target)
 
 }
 
-void Character::Shield(bool isShield)
+void Character::SetShield(bool isShield)
 {
 	this->bIsShield = isShield;
 }
 
-void Character::TakeDamage(float attackDamage)
+void Character::DecideShield(int roll)
 {
-	if (bIsShield)
+	if (roll >= shieldPercent)
 	{
-		health -= attackDamage * 0.5f;
+		bIsShield = false;
+
+
 	}
 	else
 	{
-		health -= attackDamage;
+		bIsShield = true;
+	}
+}
+
+void Character::TakeDamage(float damage)
+{
+	if (bIsShield)
+	{
+		health -= damage *(1 - shieldPower);
+	}
+	else
+	{
+		health -= damage;
 	}
 
 
@@ -93,3 +116,5 @@ bool Character::IsDead() const
 {
 	return health <= 0;
 }
+
+

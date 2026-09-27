@@ -22,9 +22,8 @@ int main()
 #pragma region 랜덤퍼센트
 
 	mt19937 gen(random_device{}());
-	uniform_int_distribution<int> coin(0, 9);
 	uniform_int_distribution<int> spawn(0, 2);
-	uniform_int_distribution<int> percent(0, 9);
+	uniform_int_distribution<int> roll(0, 9);
 
 #pragma endregion
 
@@ -34,13 +33,13 @@ int main()
 	switch (spawn(gen))
 	{
 	case 0:
-		enemy = make_unique<Goblin>("고블린", 50, 10, false, 5);
+		enemy = make_unique<Goblin>("고블린", 50, 10, false, 5, 0.5f);
 		break;
 	case 1:
-		enemy = make_unique<Orc>("오크", 150, 5, false, 7);
+		enemy = make_unique<Orc>("오크", 150, 5, false, 7, 0.7f);
 		break;
 	case 2:
-		enemy = make_unique<Dragon>("드래곤", 100, 13, false, 5);
+		enemy = make_unique<Dragon>("드래곤", 100, 13, false, 5, 0.5f);
 		break;
 
 	default:
@@ -71,12 +70,12 @@ int main()
 
 		if (chooseNum == 1)
 		{
-			player.Shield(false);
+			player.SetShield(false);
 
 		}
 		else if (chooseNum == 2)
 		{
-			player.Shield(true);
+			player.SetShield(true);
 		}
 		else
 		{
@@ -85,12 +84,12 @@ int main()
 		}
 
 
-		enemy->Shield(coin(gen));
+		enemy->DecideShield(roll(gen));
 
 
 
 		player.Attack(*enemy);
-		enemy->DecideAction(percent(gen), player);
+		enemy->DecideAction(roll(gen), player);
 
 
 		cout << player.GetName() << ", 체력 : " << player.GetHealth() << ", 공격력 : " << player.GetAttackDamage() << endl;
